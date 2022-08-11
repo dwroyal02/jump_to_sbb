@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -112,5 +113,12 @@ class SbbApplicationTests {
 		assertTrue(oa.isPresent());
 		Answer a = oa.get();
 		assertEquals(2, a.getQuestion().getId());
+	}
+
+	@Test
+	void testJpa10(){
+		this.questionRepository.disableForeignKeyCheck();
+		this.questionRepository.truncateQuestion();
+		this.questionRepository.enableForeignKeyCheck();
 	}
 }
