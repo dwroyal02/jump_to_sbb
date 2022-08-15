@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface QuestionRepository extends JpaRepository<Question, Integer> {
+public interface QuestionRepository extends JpaRepository<Question, Integer>, RepositoryUtil {
     Question findBySubject(String subject);
 
     Question findBySubjectAndContent(String subject, String content);
@@ -17,25 +17,11 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     @Transactional
     @Modifying
     @Query(
-            value = "truncate question",
+            value = "ALTER TABLE question AUTO_INCREMENT=1",
             nativeQuery = true
     )
-    void truncateQuestion();
+    void truncate();
 
-    @Transactional
-    @Modifying
-    @Query(
-            value = "SET FOREIGN_KEY_CHECKS = 0",
-            nativeQuery = true
-    )
-    void disableForeignKeyCheck();
 
-    @Transactional
-    @Modifying
-    @Query(
-            value = "SET FOREIGN_KEY_CHECKS = 1",
-            nativeQuery = true
-    )
-    void enableForeignKeyCheck();
 
 }
